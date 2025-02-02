@@ -1,8 +1,8 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
 
-import { useEffect, useState } from 'react';
-import { supabase } from './supabase';
+import { useEffect, useState } from "react";
+import { supabase } from "./supabase";
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -14,19 +14,19 @@ function App() {
       const response = await fetch(`${backendUrl}/api/data`);
       const data = await response.json();
       console.log(data);
-  };
-  fetchData();
-  }, []);  
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
-      const fetchUsers = async () => {
-          const { data, error } = await supabase.from('users').select('*');
-          if (error) console.error('Error fetching users:', error);
-          else setUsers(data);
-      };
-      fetchUsers();
+    const fetchUsers = async () => {
+      const { data, error } = await supabase.from("users").select("*");
+      if (error) console.error("Error fetching users:", error);
+      else setUsers(data);
+    };
+    fetchUsers();
   }, []);
-    
+
   return (
     <div className="App">
       <header className="App-header">
@@ -44,13 +44,13 @@ function App() {
         </a>
 
         <h1>Users</h1>
-            <ul>
-                {users.map((user) => (
-                    <li key={user.id}>
-                        {user.name} ({user.email})
-                    </li>
-                ))}
-            </ul>        
+        <ul>
+          {users.map((user) => (
+            <li key={user.id}>
+              {user.name} ({user.email})
+            </li>
+          ))}
+        </ul>
       </header>
     </div>
   );
