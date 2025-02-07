@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './UserForm.css'; // Importe o CSS
 
 function UserForm() {
   const [name, setName] = useState('');
@@ -16,23 +17,34 @@ function UserForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="user-form">
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <button type="submit">Add User</button>
-    </form>
+    <div className="form-container">
+      <form onSubmit={handleSubmit} className="user-form">
+        <h2>Add New User</h2>
+        <div className="form-group">
+          <label htmlFor="name">Name</label>
+          <input 
+            type="text" 
+            id="name" 
+            placeholder="Enter your name" 
+            value={name} 
+            onChange={(e) => setName(e.target.value)} 
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            placeholder="Enter your email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            required
+          />
+        </div>
+        <button type="submit" className="submit-btn">Add User</button>
+      </form>
+    </div>
   );
 }
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './UserList.css'; // Importe o arquivo de estilos
 
 function UserList() {
   const [users, setUsers] = useState([]);
@@ -19,16 +20,21 @@ function UserList() {
   };
 
   return (
-    <div>
+    <div className="container">
       <h2>User List</h2>
-      <ul>
+      <div className="user-list">
         {users.map((user) => (
-          <li key={user.id}>
-            {user.name} - {user.email}
-            <button onClick={() => deleteUser(user.id)}>Delete</button>
-          </li>
+          <div key={user.id} className="user-card">
+            <div className="user-info">
+              <h3>{user.name}</h3>
+              <p>{user.email}</p>
+            </div>
+            <button className="delete-btn" onClick={() => deleteUser(user.id)}>
+              Delete
+            </button>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
