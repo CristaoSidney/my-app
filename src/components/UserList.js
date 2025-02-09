@@ -1,7 +1,11 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect, useState } from 'react';
 import './UserList.css'; // Importe o arquivo de estilos
 
-function UserList() {
+const API_URL = process.env.REACT_APP_API_URL;
+
+const UserList = () => {
+  const { getAccessTokenSilently } = useAuth0();
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -9,16 +13,33 @@ function UserList() {
   }, []);
 
   const fetchUsers = async () => {
-    const response = await fetch('https://my-app-backend-gkce.onrender.com/api/users');
-    const data = await response.json();
-    setUsers(data);
+    try {
+      const token = await getAccessTokenSilently();
+      const response = await fetch(API_URL, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+      setUsers(data);
+    } catch (error) {
+      console.error("Erro ao buscar usuários:", error);
+    }
   };
 
   const deleteUser = async (id) => {
-    await fetch(`https://my-app-backend-gkce.onrender.com/api/users/${id}`, { method: 'DELETE' });
-    fetchUsers();
-  };
+    if (!window.confirm("Tem certeza que deseja excluir este usuário?")) return;
 
+    try {
+      const token = await getAccessTokenSilently();
+      await fetch(`${API_URL}/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUsers(users.filter((user) => user.id !== id));
+    } catch (error) {
+      console.error("Erro ao excluir usuário:", error);
+    }
+  };
+  
   return (
     <div className="container">
       <h2>User List</h2>
