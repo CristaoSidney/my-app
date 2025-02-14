@@ -10,7 +10,7 @@ const UserList = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, );
 
   const fetchUsers = async () => {
     try {

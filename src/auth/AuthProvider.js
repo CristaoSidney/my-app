@@ -4,11 +4,11 @@ const AuthProvider = ({ children }) => {
   
   return (
     <Auth0Provider
-      domain={process.env.REACT_APP_AUTH0_DOMAIN}
-      clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+      domain="dev-e6tkv2b8tbmr4k5m.us.auth0.com"
+      clientId="0TpwMvG8WUTvHN5PcPZPHA9kz5ZaUi6x"
       authorizationParams={{
         redirect_uri: window.location.origin,
-        audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+        audience: "https://my-app-backend-gkce.onrender.com/api",
         scope: "openid profile email"
       }}
     >

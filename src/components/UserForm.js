@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import './UserForm.css'; // Importe o CSS
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 function UserForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch('https://my-app-backend-gkce.onrender.com/api/users', {
+    await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email })
