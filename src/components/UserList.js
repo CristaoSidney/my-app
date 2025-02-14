@@ -18,6 +18,7 @@ const UserList = () => {
       const response = await fetch(API_URL, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.println(response);
       const data = await response.json();
       setUsers(data);
     } catch (error) {
