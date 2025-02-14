@@ -17,6 +17,7 @@ const UserList = () => {
       const token = await getAccessTokenSilently();
       const response = await fetch(API_URL, {
         headers: { Authorization: `Bearer ${token}` },
+        mode: 'cors'
       });
       console.log(response);
       const data = await response.json();
