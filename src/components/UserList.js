@@ -2,7 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect, useState } from 'react';
 import './UserList.css'; // Importe o arquivo de estilos
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "https://my-app-backend-gkce.onrender.com/api/users";
 
 const UserList = () => {
   const { getAccessTokenSilently } = useAuth0();
