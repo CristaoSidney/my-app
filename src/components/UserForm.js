@@ -1,53 +1,77 @@
-import React, { useState } from 'react';
-import './UserForm.css'; // Importe o CSS
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Button, TextField, Paper, Typography } from "@mui/material";
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "https://my-app-backend-gkce.onrender.com/api/users";
 
-function UserForm() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+export default function UserForm() {
+  const [user, setUser] = useState({ name: "", email: "" });
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    if (id) {
+      getAccessTokenSilently().then((token) => {
+        axios.get(`${API_URL}/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+          .then((response) => setUser(response.data));
+      });
+    }
+  }, [id, getAccessTokenSilently]);
+
+  const handleChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email })
-    });
-    setName('');
-    setEmail('');
+    const token = await getAccessTokenSilently();
+    const headers = { Authorization: `Bearer ${token}` };
+
+    if (id) {
+      await axios.put(`${API_URL}/${id}`, user, { headers });
+    } else {
+      await axios.post(API_URL, user, { headers });
+    }
+    navigate("/");
   };
 
   return (
-    <div className="form-container">
-      <form onSubmit={handleSubmit} className="user-form">
-        <h2>Add New User</h2>
-        <div className="form-group">
-          <label htmlFor="name">Name</label>
-          <input 
-            type="text" 
-            id="name" 
-            placeholder="Enter your name" 
-            value={name} 
-            onChange={(e) => setName(e.target.value)} 
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input 
-            type="email" 
-            id="email" 
-            placeholder="Enter your email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required
-          />
-        </div>
-        <button type="submit" className="submit-btn">Add User</button>
+    <Paper style={{ padding: "16px", maxWidth: "600px", margin: "0 auto" }}>
+      <Typography variant="h6" component="h2" gutterBottom>
+        {id ? "Edit User" : "Create User"}
+      </Typography>
+      <form onSubmit={handleSubmit}>
+        <TextField
+          label="Name"
+          name="name"
+          value={user.name}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+          required
+        />
+        <TextField
+          label="Email"
+          name="email"
+          value={user.email}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+          required
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          style={{ marginTop: "16px" }}
+        >
+          {id ? "Update" : "Create"}
+        </Button>
       </form>
-    </div>
+    </Paper>
   );
 }
-
-export default UserForm;
