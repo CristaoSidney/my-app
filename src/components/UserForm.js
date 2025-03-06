@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Button, TextField, Paper, Typography } from "@mui/material";
+import { Button, TextField, Paper, Typography, Box } from "@mui/material";
 
 const API_URL = "https://my-app-backend-gkce.onrender.com/api/users";
 
@@ -62,15 +62,18 @@ export default function UserForm() {
           margin="normal"
           required
         />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          style={{ marginTop: "16px" }}
-        >
-          {id ? "Update" : "Create"}
-        </Button>
+        <Box display="flex" justifyContent="space-between" mt={2}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => navigate(-1)} // Volta para a página anterior
+          >
+            Back
+          </Button>
+          <Button type="submit" variant="contained" color="primary">
+            {id ? "Update" : "Create"}
+          </Button>
+        </Box>        
       </form>
     </Paper>
   );
